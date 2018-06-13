@@ -3,7 +3,7 @@ Credentials Configuration
 """
 from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
-from openedx.core.djangoapps.plugins.constants import ProjectType, SettingsType, PluginSettings
+from openedx.core.djangoapps.plugins.constants import ProjectType, SettingsType, PluginSettings, PluginSignals
 
 
 class CredentialsConfig(AppConfig):
@@ -21,5 +21,19 @@ class CredentialsConfig(AppConfig):
                 SettingsType.DEVSTACK: {PluginSettings.RELATIVE_PATH: u'settings.devstack'},
                 SettingsType.TEST: {PluginSettings.RELATIVE_PATH: u'settings.test'},
             }
-        }
+        },
+        PluginSignals.CONFIG: {
+            ProjectType.LMS: {
+                PluginSignals.RECEIVERS: [
+                    {
+                        PluginSignals.RECEIVER_FUNC_NAME: u'handle_grade_change',
+                        PluginSignals.SIGNAL_PATH: u'openedx.core.djangoapps.signals.signals.COURSE_GRADE_CHANGED',
+                    },
+                    {
+                        PluginSignals.RECEIVER_FUNC_NAME: u'handle_cert_change',
+                        PluginSignals.SIGNAL_PATH: u'openedx.core.djangoapps.signals.signals.COURSE_CERT_CHANGED',
+                    },
+                ],
+            },
+        },
     }
