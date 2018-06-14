@@ -31,6 +31,7 @@ define(
                 }
                 this.videoTranscriptsView = new VideoTranscriptsView({
                     transcripts: this.model.get('transcripts'),
+                    transcription_status: this.model.get('transcription_status'),
                     edxVideoID: this.model.get('edx_video_id'),
                     clientVideoID: this.model.get('client_video_id'),
                     transcriptAvailableLanguages: options.transcriptAvailableLanguages,

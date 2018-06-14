@@ -337,6 +337,7 @@ define(
                     this.$el,
                     this.template({
                         transcripts: this.transcripts,
+                        transcription_status: this.transcription_status,
                         transcriptAvailableLanguages: this.transcriptAvailableLanguages,
                         edxVideoID: this.edxVideoID,
                         transcriptClientTitle: this.getTranscriptClientTitle(),

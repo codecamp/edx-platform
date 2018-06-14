@@ -524,6 +524,8 @@ def convert_video_status(video):
         ])
     elif video['status'] == 'invalid_token':
         status = StatusDisplayStrings.get('youtube_duplicate')
+    elif video['status'] == 'transcription_in_progress' or video['status'] == 'transcript_ready':
+        status = StatusDisplayStrings.get('file_complete')
     else:
         status = StatusDisplayStrings.get(video['status'])
 
@@ -538,8 +540,16 @@ def _get_videos(course):
 
     # convert VAL's status to studio's Video Upload feature status.
     for video in videos:
-        video["status"] = convert_video_status(video)
+        # Update with transcript languages
         video['transcripts'] = get_available_transcript_languages(video_id=video['edx_video_id'])
+        # Transcription status should only be visible if 3rd party transcripts are pending.
+        video['transcription_status'] = (
+            StatusDisplayStrings.get(video['status'])
+            if not video['transcripts'] and video['status'] == 'transcription_in_progress' else
+            ''
+        )
+        # Convert the video status.
+        video['status'] = convert_video_status(video)
 
     return videos
 
